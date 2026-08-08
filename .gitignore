@@ -5,3 +5,4 @@ measurement_tests/movie_facts_test_results.json
 movie_classifier_model.pkl
 *.egg-info/
 .venv/
+.idea/
