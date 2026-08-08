@@ -1,0 +1,60 @@
+{"relation": "directed", "prompt":  "Who directed the movie Avengers: Endgame?", "expected_answer": ["Anthony Russo", "Joe Russo"]}
+{"relation": "directed", "prompt":  "Who directed the movie Guardians of the Galaxy?", "expected_answer": ["James Gunn"]}
+{"relation": "directed", "prompt":  "Who directed the movie Black Panther?", "expected_answer": ["Ryan Coogler"]}
+{"relation": "directed", "prompt":  "Who directed the movie Spider-Man: Homecoming?", "expected_answer": ["Jon Watts"]}
+{"relation": "directed", "prompt":  "Who directed the movie Doctor Strange?", "expected_answer": ["Scott Derrickson"]}
+{"relation": "directed", "prompt":  "Who directed the movie Thor: Ragnarok?", "expected_answer": ["Taika Waititi"]}
+{"relation": "directed", "prompt":  "Who directed the movie Ant-Man?", "expected_answer": ["Peyton Reed"]}
+{"relation": "directed", "prompt":  "Who directed the movie Captain Marvel?", "expected_answer": ["Anna Boden", "Ryan Fleck"]}
+{"relation": "directed", "prompt":  "Who directed the movie Iron Man?", "expected_answer": ["Jon Favreau"]}
+{"relation": "directed", "prompt":  "Who directed the movie The Avengers?", "expected_answer": ["Joss Whedon"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Man of Steel?", "expected_answer": ["David S. Goyer"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Wonder Woman?", "expected_answer": ["Allan Heinberg"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Aquaman?", "expected_answer": ["David Leslie", "Johnson-McGoldrick"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Shazam!", "expected_answer": ["Henry Gayden"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie The Dark Knight Rises?", "expected_answer": ["Jonathan Nolan", "Christopher Nolan"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Flash?", "expected_answer": ["Christina Hodson"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Joker?", "expected_answer": ["Todd Phillips", "Scott Silver"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Batman v Superman: Dawn of Justice?", "expected_answer": ["Chris Terrio", "David S. Goyer"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Justice League?", "expected_answer": ["Chris Terrio", "Joss Whedon"]}
+{"relation": "screenwriter", "prompt":  "Who wrote the screenplay for the movie Superman (2025)?", "expected_answer": ["James Gunn"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie Alien?", "expected_answer": ["Sigourney Weaver", "Tom Skerritt", "John Hurt", "Veronica Cartwright"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie Blade Runner?", "expected_answer": ["Harrison Ford", "Rutger Hauer", "Sean Young"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie The Terminator?", "expected_answer": ["Arnold Schwarzenegger", "Linda Hamilton", "Michael Biehn"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie Jurassic Park?", "expected_answer": ["Sam Neill", "Laura Dern", "Jeff Goldblum"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie E.T. the Extra-Terrestrial?", "expected_answer": ["Henry Thomas", "Drew Barrymore", "Peter Coyote"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie Back to the Future?", "expected_answer": ["Michael J. Fox", "Christopher Lloyd", "Lea Thompson"]}
+{"relation": "stars-in", "prompt": "Who starred in the movie Ghostbusters (1984)?", "expected_answer": ["Bill Murray", "Dan Aykroyd", "Sigourney Weaver"]}
+{"relation": "stars-in", "prompt":  "Who starred in the movie Predator?", "expected_answer": ["Arnold Schwarzenegger", "Carl Weathers", "Jesse Ventura"]}
+{"relation": "stars-in", "prompt":  "Who starred in the movie The Thing (1982)?", "expected_answer": ["Kurt Russell", "Wilford Brimley", "Keith David"]}
+{"relation": "stars-in", "prompt":  "Who starred in the movie Communion?", "expected_answer": ["Christopher Walken", "Andreas Katsulas", "Roxanne Hart"]}
+{"relation": "release-year", "prompt":  "When was the movie Psycho released?", "expected_answer": 1960}
+{"relation": "release-year", "prompt":  "When was the movie Birds released?", "expected_answer": 1963}
+{"relation": "release-year", "prompt":  "When was the movie Vertigo released?", "expected_answer": 1958}
+{"relation": "release-year", "prompt":  "When was the movie Rear Window released?", "expected_answer": 1954}
+{"relation": "release-year", "prompt":  "When was the movie North by Northwest released?", "expected_answer": 1959}
+{"relation": "release-year", "prompt":  "When was the movie The Birds released?", "expected_answer": 1963}
+{"relation": "release-year", "prompt":  "When was the movie Marnie released?", "expected_answer": 1964}
+{"relation": "release-year", "prompt":  "When was the movie Frenzy released?", "expected_answer": 1972}
+{"relation": "release-year", "prompt":  "When was the movie Family Plot released?", "expected_answer": 1976}
+{"relation": "release-year", "prompt":  "When was the movie The Man Who Knew Too Much released?", "expected_answer": 1956}
+{"relation": "genre", "prompt":  "What is the genre of the movie E.T. the Extra-Terrestrial?", "expected_answer": ["Science Fiction", "Adventure", "Family"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Close Encounters of the Third Kind?", "expected_answer": ["Science Fiction", "Adventure", "Drama"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Jaws?", "expected_answer": ["Thriller", "Adventure", "Horror"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Jurassic Park?", "expected_answer": ["Science Fiction", "Adventure", "Thriller"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Raiders of the Lost Ark?", "expected_answer": ["Action", "Adventure"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Ready Player One?", "expected_answer": ["Science Fiction", "Adventure", "Action"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie A.I. Artificial Intelligence?", "expected_answer": ["Science Fiction", "Drama"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Minority Report?", "expected_answer": ["Science Fiction", "Action", "Thriller"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie War of the Worlds (2005)?", "expected_answer": ["Science Fiction", "Action", "Adventure"]}
+{"relation": "genre", "prompt":  "What is the genre of the movie Disclosure Day?", "expected_answer": ["Science Fiction", "Thriller"]}
+{"relation": "studio", "prompt":  "Which studio produced the movie The Shining?", "expected_answer": "Warner (Bros|Brothers)|WB"}
+{"relation": "studio", "prompt":  "Which studio produced the movie The Exorcist?", "expected_answer":  "Warner (Bros|Brothers)|WB"}
+{"relation": "studio", "prompt":  "Which studio produced the movie Rosemary's Baby?", "expected_answer": "Paramount( Pictures)?"}
+{"relation": "studio", "prompt":  "Which studio produced the movie The Omen?", "expected_answer": "(20th Century )?Fox"}
+{"relation": "studio", "prompt":  "Which studio produced the movie Poltergeist?", "expected_answer": "Metro-Goldwyn-Mayer|MGM"}
+{"relation": "studio", "prompt":  "Which studio produced the movie The Amityville Horror (1979)?", "expected_answer": "United( Artists)?"}
+{"relation": "studio", "prompt":  "Which studio produced the movie Halloween (1978)?", "expected_answer": "(Compass|Trancas) International( Pictures| Films)?"}
+{"relation": "studio", "prompt":  "Which studio produced the movie Friday the 13th (1980)?", "expected_answer": "Paramount( Pictures)?"}
+{"relation": "studio", "prompt":  "Which studio produced the movie A Nightmare on Elm Street (1984)?", "expected_answer": "New Line( Cinema)?"}
+{"relation": "studio", "prompt":  "Which studio produced the movie Scream (1996)?", "expected_answer": "Dimension Films"}
