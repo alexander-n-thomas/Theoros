@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "validators": {
+    "tryolabs/restricttotopic": {
+      "import_path": "tryolabs_grhub_restricttotopic",
+      "exports": [
+        "RestrictToTopic"
+      ],
+      "installed_at": "2026-06-18T17:43:05.056870+00:00",
+      "package_name": "tryolabs-grhub-restricttotopic"
+    },
+    "guardrails/profanity_free": {
+      "import_path": "guardrails_grhub_profanity_free",
+      "exports": [
+        "ProfanityFree"
+      ],
+      "installed_at": "2026-06-18T17:46:09.765491+00:00",
+      "package_name": "guardrails-grhub-profanity-free"
+    },
+    "guardrails/regex_match": {
+      "import_path": "guardrails_grhub_regex_match",
+      "exports": [
+        "RegexMatch"
+      ],
+      "installed_at": "2026-06-18T17:46:51.969305+00:00",
+      "package_name": "guardrails-grhub-regex-match"
+    },
+    "guardrails/detect_jailbreak": {
+      "import_path": "guardrails_grhub_detect_jailbreak",
+      "exports": [
+        "DetectJailbreak"
+      ],
+      "installed_at": "2026-06-18T19:28:25.480932+00:00",
+      "package_name": "guardrails-grhub-detect-jailbreak"
+    }
+  }
+}
