@@ -30,17 +30,26 @@ def main():
         elif query.lower() == "":
             continue
         else:
-            sanitized_prompt, results_valid, results_score = prompt_scanner.scan_input(query)
+            sanitized_prompt, results_valid, results_score = \
+                prompt_scanner.scan_input(query)
+            bad_input = False
             for scanner_name, scanner_result in results_valid.items():
-                if scanner_result:
-                    print(f"Prompt scanner '{scanner_name}'")
+                if not scanner_result:
+                    print(f"Input scanner fail: '{scanner_name}', {results_score[scanner_name]}")
+                    bad_input = True
+            if bad_input:
+                continue
 
             result = theoros_agent.run_sync(sanitized_prompt, message_history=chat_history)
             chat_history.extend(result.all_messages())
             sanitized_output, results_valid, results_score = output_scanner.scan_output(sanitized_prompt, result.output)
+            bad_output = False
             for scanner_name, scanner_result in results_valid.items():
-                if scanner_result:
-                    print(f"Output scanner '{scanner_name}'")
+                if not scanner_result:
+                    print(f"Output scanner fail: '{scanner_name}', {results_score[scanner_name]}")
+                    bad_output = True
+            if bad_output:
+                continue
 
             content = result.output
             lines = content.splitlines()

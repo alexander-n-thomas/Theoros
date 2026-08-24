@@ -1,11 +1,9 @@
 import os
 
 import dotenv
-
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.litellm import LiteLLMProvider
 from pydantic_ai.providers.openai import OpenAIProvider
-from pydantic_ai.providers.openrouter import OpenRouterProvider
 
 dotenv.load_dotenv()
 
@@ -13,7 +11,7 @@ deepseekr18b = OpenAIChatModel(
     model_name="deepseek-r1:8b",
     provider=LiteLLMProvider(
         api_key="ollama",
-        api_base="http://192.168.4.52:11434/v1"
+        api_base="localhost:11434/v1"
     )
 )
 
@@ -23,13 +21,16 @@ gpt54mini = OpenAIChatModel(
 )
 
 
-llama4scout = OpenAIChatModel(
-    "meta-llama/llama-4-scout",
-    provider=OpenRouterProvider(api_key=os.environ["OPENROUTER_API_KEY"])
+qwen3_8b = OpenAIChatModel(
+    model_name="qwen3:8b",
+    provider=LiteLLMProvider(
+        api_key="ollama",
+        api_base="localhost:11434/v1"
+    )
 )
 
 
-all_models = [deepseekr18b, gpt54mini, llama4scout]
+all_models = [deepseekr18b, gpt54mini, qwen3_8b]
 model = gpt54mini
 
-__all__ = ["model", "all_models", "deepseekr18b", "gpt54mini"]
+__all__ = ["model", "all_models", "deepseekr18b", "gpt54mini", "qwen3_8b"]

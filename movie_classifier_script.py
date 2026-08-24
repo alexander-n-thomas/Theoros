@@ -12,11 +12,14 @@ from concurrent.futures import as_completed
 from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Literal
 
+import dotenv
+import numpy as np
 import pandas as pd
 from pydantic import BaseModel, Field
-from pydantic_ai import Agent
+from pydantic_ai import Agent, NativeOutput
 from pydantic_ai.models.openai import OpenAIChatModel
-from pydantic_ai.providers.litellm import LiteLLMProvider
+from pydantic_ai.providers.ollama import OllamaProvider
+from pydantic_ai.providers.openrouter import OpenRouterProvider
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import classification_report
@@ -25,12 +28,16 @@ from sklearn.pipeline import Pipeline
 from tqdm.auto import tqdm
 from tqdm_joblib import tqdm_joblib
 
+dotenv.load_dotenv(".env")
+
+# model = OpenAIChatModel(
+#     model_name="openai/gpt-5.4-mini",
+#     provider=OpenRouterProvider(api_key=os.getenv("OPENROUTER_API_KEY"))
+# )
+
 model = OpenAIChatModel(
-    model_name="deepseek-r1:8b",
-    provider=LiteLLMProvider(
-        api_key="ollama",
-        api_base="http://192.168.4.52:11434/v1"
-    )
+    model_name="lfm2.5",
+    provider=OllamaProvider(base_url="http://192.168.4.52:11434/v1", api_key="ollama")
 )
 
 class Example(BaseModel):
@@ -47,10 +54,11 @@ generating_agent = Agent(
     guardrails for Theoros, a movie expert agent. The classification model will be used to determine if a piece of
     text is relevant to movies, film making, or related topics.
     
-    The prompt should be either "relevant" or irrelevant" and a number, and you should generate that many examples of 
+    The prompt should be "relevant" or "irrelevant" and a number, and you should generate that many examples of 
     text that are either relevant or irrelevant to movies, film making, or related topics.
     """,
-    output_type=BatchedExample
+    output_type=NativeOutput(BatchedExample),
+    model_settings={'thinking': 'minimal'}
 )
 
 def generate_training_data(
@@ -69,12 +77,15 @@ def generate_training_data(
     :return: A DataFrame containing the generated training data with columns "text" and "label".
     """
     training_data = []
-    with ThreadPoolExecutor(max_workers=num_threads) as executor, tqdm(total=num_batches) as pbar:
+    with (ThreadPoolExecutor(max_workers=num_threads) as executor,
+          tqdm(total=num_batches) as pbar):
         futures = []
         for _ in range(num_batches):
+            # noinspection bad-argument-type
             futures.append(executor.submit(
                 generating_agent.run_sync,
-                f"Generate {batch_size} examples of text that are {label_instruction} to movies, film making, or related topics."
+                user_prompt=f"Generate {batch_size} examples of text that are {label_instruction} to movies, film "
+                            f"making, or related topics."
             ))
 
         for future in as_completed(futures):
@@ -91,22 +102,22 @@ def generate_training_data(
     return pd.DataFrame(training_data)
 
 def hyperparameter_tuning(
-        training_data: pd.DataFrame,
+        X: pd.Series | np.ndarray,
+        y: pd.Series | np.ndarray,
         estimator: Pipeline,
         num_folds: int = 3,
         num_threads: int = 8
-) -> RandomForestClassifier:
+) -> Pipeline:
     """
     Perform hyperparameter tuning for the Random Forest model using GridSearchCV.
 
-    :param training_data: A DataFrame containing the training data with columns "text" and "label".
+    :param X: Training data features.
+    :param y: Training data labels.
+    :param estimator: A scikit-learn Pipeline object containing the Random Forest model.
     :param num_folds: The number of folds for cross-validation.
     :param num_threads: The number of threads to use for parallel processing.
     :return: The best Random Forest model found during hyperparameter tuning.
     """
-    X = training_data["text"]
-    y = training_data["label"]
-
     param_grid = {
         'rf__n_estimators': [100, 200, 300],
         'rf__max_depth': [5, 10, 20, 30],
@@ -128,27 +139,29 @@ def hyperparameter_tuning(
     return grid_search.best_estimator_
 
 def train_random_forest_model(
-        training_data: pd.DataFrame,
-        estimator: Pipeline,
-        test_size: float = 0.2,
+        X_train: pd.Series | np.ndarray,
+        X_test: pd.Series | np.ndarray,
+        y_train: pd.Series | np.ndarray,
+        y_test: pd.Series | np.ndarray,
+        estimator: Pipeline
 ) -> Pipeline:
     """
     Train a Random Forest model on the provided training data.
 
-    :param training_data: A DataFrame containing the training data with columns "text" and "label".
+    :param X_train: Training data features.
+    :param X_test: Test data features.
+    :param y_train: Training data labels.
+    :param y_test: Test data labels.
     :param estimator: The Random Forest estimator to use for training.
-    :param test_size: The proportion of the dataset to include in the test split.
     :return: A trained Pipeline containing the TfidfVectorizer and the Random Forest model.
     """
-    X = training_data["text"]
-    y = training_data["label"]
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=123)
-
     estimator.fit(X_train, y_train)
 
     y_pred = estimator.predict(X_test)
     print(classification_report(y_test, y_pred))
+
+    X = np.concatenate((X_train, X_test))
+    y = np.concatenate((y_train, y_test))
 
     estimator.fit(X, y)  # Refit on the entire dataset for final model
 
@@ -169,13 +182,11 @@ parser.add_argument("--train-model", action="store_true",
                     help="If set, train the classification model after generating the data.")
 parser.add_argument("--tune-hyperparameters", action="store_true",
                     help="If set, perform hyperparameter tuning for the Random Forest model.")
-parser.add_argument("--tuning-size", type=float, default=0.2,
-                    help="Proportion of the dataset to include in the validation split during hyperparameter tuning.")
 parser.add_argument("--test-size", type=float, default=0.2,
                     help="Proportion of the dataset to include in the test split when training the model.")
 parser.add_argument("--num-folds", type=int, default=3,
                     help="Number of folds for cross-validation during hyperparameter tuning.")
-parser.add_argument("--model-output-path", type=str, default="movie_classifier_model.pkl",
+parser.add_argument("--model-output-path", type=str, default="relevancy.joblib",
                     help="Path to save the trained classification model.")
 
 def main(args: list[str] | None = None):
@@ -210,11 +221,17 @@ def main(args: list[str] | None = None):
                 ('tfidf', TfidfVectorizer()),
                 ('rf', RandomForestClassifier(random_state=123))
         ])
+        X = data["text"]
+        y = data["label"]
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=parsed_args.test_size, random_state=123)
+
         if parsed_args.tune_hyperparameters:
             print("Performing hyperparameter tuning for the Random Forest model...")
-            _estimator = hyperparameter_tuning(data, _estimator, parsed_args.num_folds, parsed_args.num_threads)
+            _estimator = hyperparameter_tuning(X_train, y_train, _estimator, parsed_args.num_folds, parsed_args.num_threads)
         print("Training the Random Forest model...")
-        model_pipeline = train_random_forest_model(data, _estimator, parsed_args.test_size)
+        model_pipeline = train_random_forest_model(X_train, X_test, y_train, y_test, _estimator, )
         # Save the trained model
         print(f"Saving the trained model to {parsed_args.model_output_path}...")
         import joblib
@@ -228,13 +245,12 @@ if __name__ == "__main__":
     main([
         "--batch-size", "100",
         "--num-batches", "100",
-        "--num-threads", "8",
+        "--num-threads", "1",
         "--prior", "0.5",
         "--output-dir", "training_data",
         "--train-model",
         "--tune-hyperparameters",
-        "--tuning-size", "0.2",
         "--test-size", "0.2",
         "--num-folds", "3",
-        "--model-output-path", "movie_classifier_model.pkl"
+        "--model-output-path", "relevancy.joblib"
     ])
