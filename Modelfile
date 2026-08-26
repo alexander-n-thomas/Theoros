@@ -1,0 +1,6 @@
+FROM qwen3:8b
+
+PARAMETER top_k 50
+PARAMETER temperature 0.9
+
+SYSTEM "You are a movie chatbot, you can look up information about movies, and create plots under user constraints."
