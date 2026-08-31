@@ -14,6 +14,7 @@ PROMPT_INJECTION_THRESHOLD = 0.5
 SENTIMENT_THRESHOLD = -0.1
 TOKEN_LIMIT = 4096
 TOXICITY_THRESHOLD = 0.5
+RELEVANCY_THRESHOLD = 0.5
 
 try:
     nltk.data.find('tokenizers/punkt_tab')
@@ -57,12 +58,12 @@ class PromptScanner():
     def __init__(self):
         self.scanners = [
             input_scanners.BanCode(threshold=BAN_CODE_THRESHOLD),
-            input_scanners.Gibberish(threshold=GIBBERISH_THRESHOLD),
+            # input_scanners.Gibberish(threshold=GIBBERISH_THRESHOLD),
             input_scanners.InvisibleText(),
             input_scanners.PromptInjection(threshold=PROMPT_INJECTION_THRESHOLD),
             input_scanners.TokenLimit(limit=TOKEN_LIMIT),
             input_scanners.Toxicity(threshold=TOXICITY_THRESHOLD),
-            RelevancyInput(),
+            # RelevancyInput(threshold=RELEVANCY_THRESHOLD),
         ]
 
     def scan_input(self, user_input: str) -> tuple[str, dict[str, bool], dict[str, float]]:
@@ -74,11 +75,11 @@ class OutputScanner():
     def __init__(self):
         self.scanners = [
             output_scanners.BanCode(threshold=BAN_CODE_THRESHOLD),
-            output_scanners.Gibberish(threshold=GIBBERISH_THRESHOLD),
+            # output_scanners.Gibberish(threshold=GIBBERISH_THRESHOLD),
             output_scanners.NoRefusalLight(),
             output_scanners.Sentiment(threshold=SENTIMENT_THRESHOLD),
             output_scanners.Toxicity(threshold=TOXICITY_THRESHOLD),
-            RelevancyOutput(),
+            # RelevancyOutput(threshold=RELEVANCY_THRESHOLD),
         ]
 
     def scan_output(self, prompt: str, model_output: str) -> \

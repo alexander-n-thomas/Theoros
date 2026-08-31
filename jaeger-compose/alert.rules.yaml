@@ -1,0 +1,34 @@
+# alert.rules.yml
+groups:
+  - name: jaeger_service_alerts
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(
+            jaeger_calls_total{status_code="STATUS_CODE_ERROR"}[5m]
+          )) by (service_name)
+          /
+          sum(rate(
+            jaeger_calls_total[5m]
+          )) by (service_name) * 100 > 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected in service: {{ $labels.service_name }}"
+          description: >-
+            Service {{ $labels.service_name }} has an error rate above 1% over the 
+            last 5 minutes.
+
+      - alert: HighLatencyP95
+        expr: |
+          histogram_quantile(0.95, sum(rate(
+            jaeger_duration_milliseconds_bucket[5m]
+          )) by (le, service_name)) > 2000
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High p95 latency on service: {{ $labels.service_name }}"
+          description: >-
+            95% of requests to {{ $labels.service_name }} take longer than 2000ms.

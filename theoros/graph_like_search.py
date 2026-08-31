@@ -3,6 +3,7 @@ from typing import List
 import httpx
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
+from pydantic_ai.capabilities import Instrumentation
 
 from theoros import model
 
@@ -70,7 +71,8 @@ graph_search_agent = Agent(
         "If the graph query fails try to answer the question directly using your internal knowledge, but always try "
         "to use the graph search for complex queries that require multiple steps or specific details that are "
         "unlikely to be in your training data."
-    )
+    ),
+    capabilities=[Instrumentation()]
 )
 
 

@@ -1,6 +1,7 @@
 import textwrap
 
 from pydantic_ai import Agent
+from pydantic_ai.capabilities import Instrumentation
 
 from theoros import model
 
@@ -19,5 +20,6 @@ pitch_review_agent = Agent(
         
         Your goal is to help the writer create a pitch that entices the reader to want to 
         learn more about the story while providing a clear understanding of the plot's structure and main events.
-    """)
+    """),
+    capabilities=[Instrumentation()]
 )

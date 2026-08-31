@@ -1,11 +1,36 @@
 
 import textwrap
 
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace.sampling import Sampler, ParentBased, TraceIdRatioBased
 from pydantic_ai import Agent
+from pydantic_ai.capabilities import Instrumentation
 
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
 from theoros import model
 from theoros.graph_like_search import WikidataClient
+
+resource = Resource.create(attributes={
+    "service.name": "theoros"
+})
+quality_resource = Resource.create(attributes={
+    "service.name": "theoros-quality"
+})
+safety_resource = Resource.create(attributes={
+    "service.name": "theoros"
+})
+quality_sampler = ParentBased(root=TraceIdRatioBased(rate=0.10))
+safety_sampler = ParentBased(root=TraceIdRatioBased(rate=0.10))
+provider = TracerProvider(resource=resource)
+quality_provider = TracerProvider(resource=quality_resource, sampler=quality_sampler)
+safety_provider = TracerProvider(resource=safety_resource, sampler=safety_sampler)
+processor = BatchSpanProcessor(OTLPSpanExporter(endpoint="http://192.168.4.52:4317"))
+provider.add_span_processor(processor)
+trace.set_tracer_provider(provider)
 
 theoros_agent = Agent(
     model=model,
@@ -13,7 +38,8 @@ theoros_agent = Agent(
     You are Theoros, an expert in all things movies. You have access to a powerful movie database and can answer any 
     question about movies, directors, cinematographers, awards, and more. If you don't know the answer off the top of 
     your head, you can use other agents to look it up. 
-    Always provide a concise and accurate answer to the user's query.""")
+    Always provide a concise and accurate answer to the user's query."""),
+    capabilities=[Instrumentation()]
 )
 
 wikidata_agent = WikidataClient()

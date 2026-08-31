@@ -1,6 +1,7 @@
 import textwrap
 
 from pydantic_ai import Agent
+from pydantic_ai.capabilities import Instrumentation
 
 from theoros import model, all_models
 from theoros.wiki_util import search_wikipedia
@@ -57,7 +58,8 @@ plot_search_agent_prompt_based = Agent(
        Final Recommendation:
        Watchlist: <movie1>, <movie2>, <movie3>
        Recommended Movie: <movie>
-    """)
+    """),
+    capabilities=[Instrumentation()]
 )
 
 plot_search_agent_prompt_based.tool_plain(search_wikipedia)
@@ -80,7 +82,8 @@ plot_search_agent_manager = Agent(
         comprehensive answer that combines the detailed knowledge of the Movie Buff, the analytical 
         insights of the Film Critic, and the engaging storytelling of the Storyteller. Always provide 
         a final answer that is concise
-    """)
+    """),
+    capabilities=[Instrumentation()]
 )
 
 plot_search_agent_movie_buff = Agent(
@@ -92,7 +95,8 @@ plot_search_agent_movie_buff = Agent(
         recommendation that is coherent and engaging plot summary of 
         movies matching the query. As the movie buff, you should explain 
         what makes people love the movie, and why it is a must-watch.
-    """)
+    """),
+    capabilities=[Instrumentation()]
 )
 
 plot_search_agent_movie_buff.tool_plain(search_wikipedia)
@@ -106,7 +110,8 @@ plot_search_agent_film_critic = Agent(
         recommendation that is coherent and engaging plot summary of 
         movies matching the query. As the film critic, you should explain 
         why the movie is critically acclaimed, and what makes it a must-watch.
-    """)
+    """),
+    capabilities=[Instrumentation()]
 )
 
 plot_search_agent_film_critic.tool_plain(search_wikipedia)
@@ -120,7 +125,8 @@ plot_search_agent_storyteller = Agent(
         construct a recommendation that is coherent and engaging plot summary of 
         movies matching the query. As the storyteller, you should explain why 
         this story is compelling, and what makes it a must-watch.
-    """)
+    """),
+    capabilities=[Instrumentation()]
 )
 
 plot_search_agent_storyteller.tool_plain(search_wikipedia)

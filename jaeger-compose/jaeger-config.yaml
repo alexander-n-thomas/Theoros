@@ -1,0 +1,48 @@
+exporters:
+  jaeger_storage_exporter:
+    trace_storage: trace_backend
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: "jaeger"
+
+extensions:
+  jaeger_storage:
+    backends:
+      trace_backend:
+        memory:
+          max_traces: 10000
+    metric_backends:
+      prometheus_backend:
+        prometheus:
+          endpoint: "http://prometheus:9090"
+  jaeger_query:
+    storage:
+      traces: trace_backend
+      metrics: prometheus_backend
+
+connectors:
+  spanmetrics: {}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch: {}
+
+service:
+  extensions: [jaeger_storage, jaeger_query]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [jaeger_storage_exporter, spanmetrics]
+    metrics:
+      receivers: [spanmetrics]
+      processors: [batch]
+      exporters: [prometheus]

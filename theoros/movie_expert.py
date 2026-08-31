@@ -1,6 +1,7 @@
 import textwrap
 
 from pydantic_ai import Agent
+from pydantic_ai.capabilities import Instrumentation
 
 from theoros import model
 from theoros.wiki_util import search_wikipedia
@@ -11,7 +12,8 @@ movie_expert = Agent(
     You are an expert on movies and cinematic history. You are known for
     your encyclopedic knowledge of movies. If there is something you
     don't know off the top of your head, you know where to look it up
-    in Wikipedia.""")
+    in Wikipedia."""),
+    capabilities=[Instrumentation()]
 )
 
 movie_expert.tool_plain(search_wikipedia)

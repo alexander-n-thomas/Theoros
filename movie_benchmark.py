@@ -12,7 +12,7 @@ from tqdm.auto import tqdm
 DATA_URL = ("hf://datasets/vishnupriyavr/wiki-movie-plots-with-summaries"
             "/wiki_movie_plots_deduped_with_summaries.csv")
 
-DEFAULT_MODEL = "ollama_chat/deepseek-r1:1.5b"
+DEFAULT_MODEL = "ollama_chat/quant-theoros"
 DEFAULT_SAMPLE_SIZE = 100
 
 ACTION = "Action"
@@ -170,6 +170,6 @@ if __name__ == "__main__":
         # "--model", "ollama_chat/qwen3:8b",
         # "--model", "ollama_chat/deepseek-r1:1.5b",
         # "--model", "ollama_chat/llama3.2:1b",
-        "--model", "ollama_chat/qwen3:4b",
+        "--model", "ollama_chat/quant-theoros",
         "--overwrite"
     ])
